@@ -16,5 +16,14 @@ public class SimpleBookInventory implements BookInventory {
     public int countCopiesByIsbn(String isbn) {
         return countNumberOfBooks.getOrDefault(isbn, 0);
     }
-    
+
+    @Override
+    public int decrementBookCount(String isbn) {
+        int currentCount = countNumberOfBooks.getOrDefault(isbn, 0);
+        if (currentCount > 0) {
+            countNumberOfBooks.put(isbn, currentCount - 1);
+        }
+        return countNumberOfBooks.getOrDefault(isbn, 0);
+    }
+
 }

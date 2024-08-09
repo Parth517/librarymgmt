@@ -24,6 +24,13 @@ public class LibraryManagementSystemTest {
             book1 = new Books("Effective Coding", "Abc", "1234567891234", 2018);
             libraryManagementSystem.addBook(book1);
             assertTrue(libraryManagementSystem.getBooksInLibrary().contains(book1));
+
+            // Ensure getters are called and executed
+            assertEquals("Effective Coding", book1.getTitle());
+            assertEquals("Abc", book1.getAuthor());
+            assertEquals("1234567891234", book1.getIsbn());
+            assertEquals(2018, book1.getPublicationYear());
+
         } catch (invalidBookDetailsException e) {
             fail("Exception should not be thrown for valid book details");
         }
@@ -53,6 +60,16 @@ public class LibraryManagementSystemTest {
     public void shouldReturnExceptionWhenBookNameIsMissing() {
         try {
             new Books("", "Abc", "1234567891234", 2011);
+            fail("Expected an InvalidBookDetailsException to be thrown");
+        } catch (invalidBookDetailsException e) {
+            assertEquals("All details must be filled", e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldReturnExceptionWhenTitleIsNull() {
+        try {
+            new Books(null, "Abc", "1234567891234", 2011);
             fail("Expected an InvalidBookDetailsException to be thrown");
         } catch (invalidBookDetailsException e) {
             assertEquals("All details must be filled", e.getMessage());
@@ -95,14 +112,24 @@ public class LibraryManagementSystemTest {
     }
 
     @Test
-    public void shouldBorrowBookWhenAvailable(){
+    public void shouldBorrowBookWhenAvailable() {
         try {
             book1 = new Books("Effective Coding", "Abc", "1234567891234", 2018);
             libraryManagementSystem.addBook(book1);
             libraryManagementSystem.borrowBook("1234567891234");
-            assertEquals(0,libraryManagementSystem.countCopiesByIsbn("1234567891234"));
-        } catch (invalidBookDetailsException | bookNotAvailableException e ) {
-            fail("Exception should not be raised here");   
+            assertEquals(0, libraryManagementSystem.countCopiesByIsbn("1234567891234"));
+        } catch (invalidBookDetailsException | bookNotAvailableException e) {
+            fail("Exception should not be raised here");
+        }
+    }
+
+    @Test
+    public void shouldNotBorrowBookWhenBookIsNotAvailable() {
+        try {
+            libraryManagementSystem.borrowBook("1234567891234");
+            fail("Expected an Error when book that doesnt exist is tried to be borrowed");
+        } catch (bookNotAvailableException e) {
+            assertEquals("The requested book is not available", e.getMessage());
         }
     }
 }

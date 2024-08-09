@@ -27,4 +27,22 @@ public class LibraryManagementSystem implements BookManager {
     public int countCopiesByIsbn(String isbn) {
         return bookInventory.countCopiesByIsbn(isbn);
     }
+
+    public void borrowBook(String isbn) throws bookNotAvailableException {
+        int availCopies = bookInventory.countCopiesByIsbn(isbn);
+        if (availCopies <= 0) {
+            throw new bookNotAvailableException("The requested book is not available");
+        }
+        Books bookToRemove = null;
+        for (Books book : booksInLibrary) {
+            if (book.getIsbn().equals(isbn)) {
+                bookToRemove = book;
+                break;
+            }
+        }
+        if (bookToRemove != null) {
+            booksInLibrary.remove(bookToRemove);
+            bookInventory.decrementBookCount(isbn);
+        }
+    }
 }

@@ -7,7 +7,13 @@ public class Books {
     private String isbn;
     private int publicationYear;
 
-    public Books(String title, String author, String isbn, int publicationYear) {
+    public Books(String title, String author, String isbn, int publicationYear) throws invalidBookDetailsException{
+        if(title==null||title.isEmpty()||
+            author==null||author.isEmpty()||
+            isbn==null||isbn.isEmpty()||
+            publicationYear<=0){
+                throw new invalidBookDetailsException("All details must be filled");
+            }
         this.title = title;
         this.author = author;
         this.isbn = isbn;
@@ -46,3 +52,4 @@ public class Books {
         this.publicationYear = publicationYear;
     }
 }
+

@@ -1,29 +1,30 @@
 package com.example;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-public class LibraryManagementSystem {
+public class LibraryManagementSystem implements BookManager {
 
-    private static List<Books> BooksInLibrary = new ArrayList<>();
-    Map<String, Integer> countNumberOfBooks = new HashMap<>();
+    private final List<Books> booksInLibrary = new ArrayList<>();
+    private final BookInventory bookInventory;
 
+    public LibraryManagementSystem(BookInventory bookInventory) {
+        this.bookInventory = bookInventory;
+    }
+
+    @Override
     public void addBook(Books book) {
-        BooksInLibrary.add(book);
-        countBooks(book);
+        booksInLibrary.add(book);
+        bookInventory.countBook(book);
     }
 
-    public void countBooks(Books book) {
-        countNumberOfBooks.put(book.getIsbn(), countNumberOfBooks.getOrDefault(book.getIsbn(), 0) + 1);
-    }
-
-    public static List<Books> getBooksInLibrary() {
-        return BooksInLibrary;
+    @Override
+    public List<Books> getBooksInLibrary() {
+        return Collections.unmodifiableList(booksInLibrary);
     }
 
     public int countCopiesByIsbn(String isbn) {
-        return countNumberOfBooks.getOrDefault(isbn, 0);
+        return bookInventory.countCopiesByIsbn(isbn);
     }
 }

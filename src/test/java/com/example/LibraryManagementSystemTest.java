@@ -10,14 +10,21 @@ import org.junit.jupiter.api.BeforeEach;
 
 public class LibraryManagementSystemTest {
     private LibraryManagementSystem libraryManagementSystem;
+    private Books book1;
 
     @Before
     public void setup() {
-        libraryManagementSystem = new LibraryManagementSystem("Effective Coding","Abc","1234567891234",2018);
+        libraryManagementSystem = new LibraryManagementSystem();
     }
     @Test
     public void shouldAddBook(){
-        libraryManagementSystem.addBook(libraryManagementSystem);
-        assertTrue(libraryManagementSystem.getBooksInLibrary().contains(libraryManagementSystem));
+        book1=new Books("Effective Coding","Abc","1234567891234",2018);
+        libraryManagementSystem.addBook(book1);
+        assertTrue(libraryManagementSystem.getBooksInLibrary().contains(book1));
     }
+
+    @Test 
+    public void shouldReturnExceptionWhenIncorrectNumberOfDetailsAreAdded() throws invalidBookDetailsException{
+        new Books("Effective Coding","Abc","1234567891234");
+     }
 }

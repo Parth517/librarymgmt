@@ -45,4 +45,11 @@ public class LibraryManagementSystem implements BookManager {
             bookInventory.decrementBookCount(isbn);
         }
     }
+
+    public void returnBook(Books book){
+        booksInLibrary.add(book);
+        bookInventory.incrementBookCount(book.getIsbn());
+    }
+
+ 
 }

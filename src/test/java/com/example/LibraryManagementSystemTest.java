@@ -93,4 +93,16 @@ public class LibraryManagementSystemTest {
             fail("Exception should not be thrown when valid books are added");
         }
     }
+
+    @Test
+    public void shouldBorrowBookWhenAvailable(){
+        try {
+            book1 = new Books("Effective Coding", "Abc", "1234567891234", 2018);
+            libraryManagementSystem.addBook(book1);
+            libraryManagementSystem.borrowBook("1234567891234");
+            assertEquals(0,libraryManagementSystem.countCopiesByIsbn("1234567891234"));
+        } catch (invalidBookDetailsException | bookNotAvailableException e ) {
+            fail("Exception should not be raised here");   
+        }
+    }
 }

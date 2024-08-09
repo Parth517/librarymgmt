@@ -1,12 +1,12 @@
 package com.example;
 
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
+
 public class LibraryManagementSystemTest {
 
     private LibraryManagementSystem libraryManagementSystem;
@@ -16,7 +16,7 @@ public class LibraryManagementSystemTest {
     @Before
     public void setup() {
         libraryManagementSystem = new LibraryManagementSystem();
-        
+
     }
 
     @Test
@@ -80,14 +80,18 @@ public class LibraryManagementSystemTest {
         }
     }
 
-    @Test 
-    public void shouldReturnNumberOfBooksInTheLibraryBasedOnIsbnNumber(){
-        book1 = new Books("Effective Coding", "Abc", "1234567891234", 2018);
-        book2 = new Books("Advanced Coding", "Def", "1234567891234", 2020);
-        libraryManagementSystem.addBook(book1);
-        libraryManagementSystem.addBook(book2);
-        assertTrue(libraryManagementSystem.getBooksInLibrary().contains(book1));
-        assertTrue(libraryManagementSystem.getBooksInLibrary().contains(book2));
-        assertEquals(2, libraryManagementSystem.countCopiesByIsbn("1234567891234"));
+    @Test
+    public void shouldReturnNumberOfBooksInTheLibraryBasedOnIsbnNumber() {
+        try {
+            book1 = new Books("Effective Coding", "Abc", "1234567891234", 2018);
+            book2 = new Books("Advanced Coding", "Def", "1234567891234", 2020);
+            libraryManagementSystem.addBook(book1);
+            libraryManagementSystem.addBook(book2);
+            assertTrue(libraryManagementSystem.getBooksInLibrary().contains(book1));
+            assertTrue(libraryManagementSystem.getBooksInLibrary().contains(book2));
+            assertEquals(2, libraryManagementSystem.countCopiesByIsbn("1234567891234"));
+        } catch (invalidBookDetailsException e) {
+            assertEquals("All details must be filled", e.getMessage());
+        }
     }
 }

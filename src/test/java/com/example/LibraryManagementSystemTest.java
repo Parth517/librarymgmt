@@ -3,7 +3,6 @@ package com.example;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,8 +14,8 @@ public class LibraryManagementSystemTest {
 
     @Before
     public void setup() {
-        libraryManagementSystem = new LibraryManagementSystem();
-
+        // Initialize the LibraryManagementSystem with a SimpleBookInventory instance
+        libraryManagementSystem = new LibraryManagementSystem(new SimpleBookInventory());
     }
 
     @Test
@@ -34,7 +33,7 @@ public class LibraryManagementSystemTest {
     public void shouldReturnExceptionWhenIncorrectNumberOfDetailsAreAdded() {
         try {
             new Books("Effective Coding", "Abc", "1234567891234", 0);
-            fail("Expected an invalidBookDetailsException to be thrown");
+            fail("Expected an InvalidBookDetailsException to be thrown");
         } catch (invalidBookDetailsException e) {
             assertEquals("All details must be filled", e.getMessage());
         }
@@ -44,7 +43,7 @@ public class LibraryManagementSystemTest {
     public void shouldReturnExceptionWhenAuthorNameIsMissing() {
         try {
             new Books("Effective Coding", "", "1234567891234", 2011);
-            fail("Expected an invalidBookDetailsException to be thrown");
+            fail("Expected an InvalidBookDetailsException to be thrown");
         } catch (invalidBookDetailsException e) {
             assertEquals("All details must be filled", e.getMessage());
         }
@@ -54,7 +53,7 @@ public class LibraryManagementSystemTest {
     public void shouldReturnExceptionWhenBookNameIsMissing() {
         try {
             new Books("", "Abc", "1234567891234", 2011);
-            fail("Expected an invalidBookDetailsException to be thrown");
+            fail("Expected an InvalidBookDetailsException to be thrown");
         } catch (invalidBookDetailsException e) {
             assertEquals("All details must be filled", e.getMessage());
         }
@@ -64,7 +63,7 @@ public class LibraryManagementSystemTest {
     public void shouldReturnExceptionWhenIsbnIsMissing() {
         try {
             new Books("Book Title", "Abc", "", 2011);
-            fail("Expected an invalidBookDetailsException to be thrown");
+            fail("Expected an InvalidBookDetailsException to be thrown");
         } catch (invalidBookDetailsException e) {
             assertEquals("All details must be filled", e.getMessage());
         }
@@ -74,7 +73,7 @@ public class LibraryManagementSystemTest {
     public void shouldReturnExceptionWhenAllDetailsAreMissing() {
         try {
             new Books("", "", "", 0);
-            fail("Expected an invalidBookDetailsException to be thrown");
+            fail("Expected an InvalidBookDetailsException to be thrown");
         } catch (invalidBookDetailsException e) {
             assertEquals("All details must be filled", e.getMessage());
         }
@@ -91,7 +90,7 @@ public class LibraryManagementSystemTest {
             assertTrue(libraryManagementSystem.getBooksInLibrary().contains(book2));
             assertEquals(2, libraryManagementSystem.countCopiesByIsbn("1234567891234"));
         } catch (invalidBookDetailsException e) {
-            assertEquals("All details must be filled", e.getMessage());
+            fail("Exception should not be thrown when valid books are added");
         }
     }
 }

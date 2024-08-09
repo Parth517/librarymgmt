@@ -1,41 +1,29 @@
 package com.example;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LibraryManagementSystem {
 
-
     private static List<Books> BooksInLibrary = new ArrayList<>();
-    private static List<String[]> countNumberOfBooks = new ArrayList<>();
+    Map<String, Integer> countNumberOfBooks = new HashMap<>();
 
     public void addBook(Books book) {
         BooksInLibrary.add(book);
-        boolean found=false;
-        //count number of books if book is already in countNumberOfBooks
-        for (String[] entry : countNumberOfBooks) {
-            if (entry[0].equals(book.getIsbn())) {
-                entry[1] = String.valueOf(Integer.parseInt(entry[1]) + 1);
-                found = true;
-                break;
-            }
-        }
-        if(!found){
-            countNumberOfBooks.add(new String[]{book.getIsbn(),"1"});
-        }
-        System.out.println("Book added Successfully " + book.getTitle());
+        countBooks(book);
+    }
+
+    public void countBooks(Books book) {
+        countNumberOfBooks.put(book.getIsbn(), countNumberOfBooks.getOrDefault(book.getIsbn(), 0) + 1);
     }
 
     public static List<Books> getBooksInLibrary() {
         return BooksInLibrary;
     }
 
-    public int countCopiesByIsbn(String isbn){
-        for(String[] entry:countNumberOfBooks){
-            if (entry[0].equals(isbn)) {
-                return Integer.parseInt(entry[1]);
-            }
-        }
-        return 0;
+    public int countCopiesByIsbn(String isbn) {
+        return countNumberOfBooks.getOrDefault(isbn, 0);
     }
 }

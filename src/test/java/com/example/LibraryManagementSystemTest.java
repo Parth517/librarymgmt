@@ -1,20 +1,22 @@
 package com.example;
 
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
-
 public class LibraryManagementSystemTest {
 
     private LibraryManagementSystem libraryManagementSystem;
     private Books book1;
+    private Books book2;
 
     @Before
     public void setup() {
         libraryManagementSystem = new LibraryManagementSystem();
+        
     }
 
     @Test
@@ -47,6 +49,7 @@ public class LibraryManagementSystemTest {
             assertEquals("All details must be filled", e.getMessage());
         }
     }
+
     @Test
     public void shouldReturnExceptionWhenBookNameIsMissing() {
         try {
@@ -56,6 +59,7 @@ public class LibraryManagementSystemTest {
             assertEquals("All details must be filled", e.getMessage());
         }
     }
+
     @Test
     public void shouldReturnExceptionWhenIsbnIsMissing() {
         try {
@@ -65,13 +69,25 @@ public class LibraryManagementSystemTest {
             assertEquals("All details must be filled", e.getMessage());
         }
     }
+
     @Test
     public void shouldReturnExceptionWhenAllDetailsAreMissing() {
         try {
-            new Books("", "", "",0);
+            new Books("", "", "", 0);
             fail("Expected an invalidBookDetailsException to be thrown");
         } catch (invalidBookDetailsException e) {
             assertEquals("All details must be filled", e.getMessage());
         }
+    }
+
+    @Test 
+    public void shouldReturnNumberOfBooksInTheLibraryBasedOnIsbnNumber(){
+        book1 = new Books("Effective Coding", "Abc", "1234567891234", 2018);
+        book2 = new Books("Advanced Coding", "Def", "1234567891234", 2020);
+        libraryManagementSystem.addBook(book1);
+        libraryManagementSystem.addBook(book2);
+        assertTrue(libraryManagementSystem.getBooksInLibrary().contains(book1));
+        assertTrue(libraryManagementSystem.getBooksInLibrary().contains(book2));
+        assertEquals(2, libraryManagementSystem.countCopiesByIsbn("1234567891234"));
     }
 }

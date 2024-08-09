@@ -132,4 +132,52 @@ public class LibraryManagementSystemTest {
             assertEquals("The requested book is not available", e.getMessage());
         }
     }
+
+    @Test
+    public void shouldCheckIfCountIsDecrementedTo0AfterBorrowing() {
+        try {
+            book1 = new Books("Effective Coding", "Abc", "1234567891234", 2018);
+            libraryManagementSystem.addBook(book1);
+            // ensue book is added and count is correct
+            assertEquals(1, libraryManagementSystem.countCopiesByIsbn("1234567891234"));
+            libraryManagementSystem.borrowBook("1234567891234");
+            assertEquals(0, libraryManagementSystem.countCopiesByIsbn("1234567891234"));
+        } catch (bookNotAvailableException | invalidBookDetailsException e) {
+            fail("Exception should not be raised here");
+        }
+    }
+
+    @Test
+    public void shouldNotRemoveAnyBookWhenIsbnDoesntMatch() {
+        try {
+            book1 = new Books("Effective Coding", "Abc", "1234567891234", 2018);
+            libraryManagementSystem.addBook(book1);
+            assertEquals(1, libraryManagementSystem.countCopiesByIsbn("1234567891234"));
+            libraryManagementSystem.borrowBook("1111111111111");
+
+            fail("Book not available exception should be raised here");
+        } catch (bookNotAvailableException e) {
+            assertEquals(1, libraryManagementSystem.countCopiesByIsbn("1234567891234"));
+            assertEquals(0, libraryManagementSystem.countCopiesByIsbn("1111111111111"));
+        } catch (invalidBookDetailsException e) {
+            fail("Exception should not be raised here");
+        }
+    }
+
+    @Test
+    public void shouldDecrementCountWhenBookIsAvailable() {
+        try {
+            book1 = new Books("Effective Coding", "Abc", "1234567891234", 2018);
+            libraryManagementSystem.addBook(book1);
+            libraryManagementSystem.addBook(book1);
+            assertEquals(2, libraryManagementSystem.countCopiesByIsbn("1234567891234"));
+
+            libraryManagementSystem.borrowBook("1234567891234");
+            assertEquals(1, libraryManagementSystem.countCopiesByIsbn("1234567891234"));
+            libraryManagementSystem.borrowBook("1234567891234");
+            assertEquals(0, libraryManagementSystem.countCopiesByIsbn("1234567891234"));
+        } catch (invalidBookDetailsException | bookNotAvailableException e) {
+            fail("Exception should not be raised here");
+        }
+    }
 }

@@ -33,17 +33,8 @@ public class LibraryManagementSystem implements BookManager {
         if (availCopies <= 0) {
             throw new bookNotAvailableException("The requested book is not available");
         }
-        Books bookToRemove = null;
-        for (Books book : booksInLibrary) {
-            if (book.getIsbn().equals(isbn)) {
-                bookToRemove = book;
-                break;
-            }
-        }
-        if (bookToRemove != null) {
-            booksInLibrary.remove(bookToRemove);
-            bookInventory.decrementBookCount(isbn);
-        }
+        booksInLibrary.removeIf(book -> book.getIsbn().equals(isbn));
+        bookInventory.decrementBookCount(isbn);
     }
 
     public void returnBook(Books book){
@@ -51,5 +42,7 @@ public class LibraryManagementSystem implements BookManager {
         bookInventory.incrementBookCount(book.getIsbn());
     }
 
-    
+    public List<Books> viewAllAvailableBooks(){
+        return Collections.unmodifiableList(booksInLibrary);
+    }
 }

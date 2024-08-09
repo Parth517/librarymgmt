@@ -26,4 +26,8 @@ public class SimpleBookInventory implements BookInventory {
         return countNumberOfBooks.getOrDefault(isbn, 0);
     }
 
+    @Override
+    public void incrementBookCount(String isbn){
+        countNumberOfBooks.put(isbn, countNumberOfBooks.getOrDefault(isbn, 0)+1);
+    }
 }

@@ -3,6 +3,10 @@ package com.example;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -180,4 +184,20 @@ public class LibraryManagementSystemTest {
             fail("Exception should not be raised here");
         }
     }
+   @Test
+public void shouldReturnBookAndIncrementCount() {
+    try {
+        book1 = new Books("Effective Coding", "Abc", "1234567891234", 2018);
+        libraryManagementSystem.addBook(book1);
+        libraryManagementSystem.borrowBook("1234567891234");
+        assertEquals(0, libraryManagementSystem.countCopiesByIsbn("1234567891234"));
+
+        // Return the book
+        libraryManagementSystem.returnBook(book1);
+        assertEquals(1, libraryManagementSystem.countCopiesByIsbn("1234567891234"));
+
+    } catch (invalidBookDetailsException | bookNotAvailableException e) {
+        fail("Exception should not be raised here");
+    }
+}
 }

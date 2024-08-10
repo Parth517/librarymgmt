@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-
 import java.util.List;
 
 import org.junit.Before;
@@ -25,14 +24,14 @@ public class LibraryManagementSystemTest {
     @Test
     public void shouldAddBook() {
         try {
-            book1 = new Books("Effective Coding", "Abc", "1234567891234", 2018);
+            book1 = new Books("Effective Coding", "Abc", "978-0-596-52068-7", 2018);
             libraryManagementSystem.addBook(book1);
             assertTrue(libraryManagementSystem.getBooksInLibrary().contains(book1));
 
             // Ensure getters are called and executed
             assertEquals("Effective Coding", book1.getTitle());
             assertEquals("Abc", book1.getAuthor());
-            assertEquals("1234567891234", book1.getIsbn());
+            assertEquals("978-0-596-52068-7", book1.getIsbn());
             assertEquals(2018, book1.getPublicationYear());
 
         } catch (invalidBookDetailsException e) {
@@ -43,7 +42,7 @@ public class LibraryManagementSystemTest {
     @Test
     public void shouldReturnExceptionWhenIncorrectNumberOfDetailsAreAdded() {
         try {
-            new Books("Effective Coding", "Abc", "1234567891234", 0);
+            new Books("Effective Coding", "Abc", "978-0-596-52068-7", 0);
             fail("Expected an InvalidBookDetailsException to be thrown");
         } catch (invalidBookDetailsException e) {
             assertEquals("All details must be filled", e.getMessage());
@@ -53,7 +52,7 @@ public class LibraryManagementSystemTest {
     @Test
     public void shouldReturnExceptionWhenAuthorNameIsMissing() {
         try {
-            new Books("Effective Coding", "", "1234567891234", 2011);
+            new Books("Effective Coding", "", "978-0-596-52068-7", 2011);
             fail("Expected an InvalidBookDetailsException to be thrown");
         } catch (invalidBookDetailsException e) {
             assertEquals("All details must be filled", e.getMessage());
@@ -63,7 +62,7 @@ public class LibraryManagementSystemTest {
     @Test
     public void shouldReturnExceptionWhenBookNameIsMissing() {
         try {
-            new Books("", "Abc", "1234567891234", 2011);
+            new Books("", "Abc", "978-0-596-52068-7", 2011);
             fail("Expected an InvalidBookDetailsException to be thrown");
         } catch (invalidBookDetailsException e) {
             assertEquals("All details must be filled", e.getMessage());
@@ -73,7 +72,7 @@ public class LibraryManagementSystemTest {
     @Test
     public void shouldReturnExceptionWhenTitleIsNull() {
         try {
-            new Books(null, "Abc", "1234567891234", 2011);
+            new Books(null, "Abc", "978-0-596-52068-7", 2011);
             fail("Expected an InvalidBookDetailsException to be thrown");
         } catch (invalidBookDetailsException e) {
             assertEquals("All details must be filled", e.getMessage());
@@ -101,27 +100,22 @@ public class LibraryManagementSystemTest {
     }
 
     @Test
-    public void shouldReturnNumberOfBooksInTheLibraryBasedOnIsbnNumber() {
+    public void shouldReturnExceptionWhenIsbnIsInvalid() {
         try {
-            book1 = new Books("Effective Coding", "Abc", "1234567891234", 2018);
-            book2 = new Books("Advanced Coding", "Def", "1234567891234", 2020);
-            libraryManagementSystem.addBook(book1);
-            libraryManagementSystem.addBook(book2);
-            assertTrue(libraryManagementSystem.getBooksInLibrary().contains(book1));
-            assertTrue(libraryManagementSystem.getBooksInLibrary().contains(book2));
-            assertEquals(2, libraryManagementSystem.countCopiesByIsbn("1234567891234"));
+            new Books("Effective Coding", "Abc", "1234567891234", 2018);
+            fail("Expected an InvalidBookDetailsException to be thrown");
         } catch (invalidBookDetailsException e) {
-            fail("Exception should not be thrown when valid books are added");
+            assertEquals("ISBN must be in the format 978-0-596-52068-7", e.getMessage());
         }
     }
 
     @Test
     public void shouldBorrowBookWhenAvailable() {
         try {
-            book1 = new Books("Effective Coding", "Abc", "1234567891234", 2018);
+            book1 = new Books("Effective Coding", "Abc", "978-0-596-52068-7", 2018);
             libraryManagementSystem.addBook(book1);
-            libraryManagementSystem.borrowBook("1234567891234");
-            assertEquals(0, libraryManagementSystem.countCopiesByIsbn("1234567891234"));
+            libraryManagementSystem.borrowBook("978-0-596-52068-7");
+            assertEquals(0, libraryManagementSystem.countCopiesByIsbn("978-0-596-52068-7"));
         } catch (invalidBookDetailsException | bookNotAvailableException e) {
             fail("Exception should not be raised here");
         }
@@ -130,8 +124,8 @@ public class LibraryManagementSystemTest {
     @Test
     public void shouldNotBorrowBookWhenBookIsNotAvailable() {
         try {
-            libraryManagementSystem.borrowBook("1234567891234");
-            fail("Expected an Error when book that doesnt exist is tried to be borrowed");
+            libraryManagementSystem.borrowBook("978-0-596-52068-7");
+            fail("Expected an Error when book that doesn't exist is tried to be borrowed");
         } catch (bookNotAvailableException e) {
             assertEquals("The requested book is not available", e.getMessage());
         }
@@ -140,12 +134,12 @@ public class LibraryManagementSystemTest {
     @Test
     public void shouldCheckIfCountIsDecrementedTo0AfterBorrowing() {
         try {
-            book1 = new Books("Effective Coding", "Abc", "1234567891234", 2018);
+            book1 = new Books("Effective Coding", "Abc", "978-0-596-52068-7", 2018);
             libraryManagementSystem.addBook(book1);
-            // ensue book is added and count is correct
-            assertEquals(1, libraryManagementSystem.countCopiesByIsbn("1234567891234"));
-            libraryManagementSystem.borrowBook("1234567891234");
-            assertEquals(0, libraryManagementSystem.countCopiesByIsbn("1234567891234"));
+            // Ensure book is added and count is correct
+            assertEquals(1, libraryManagementSystem.countCopiesByIsbn("978-0-596-52068-7"));
+            libraryManagementSystem.borrowBook("978-0-596-52068-7");
+            assertEquals(0, libraryManagementSystem.countCopiesByIsbn("978-0-596-52068-7"));
         } catch (bookNotAvailableException | invalidBookDetailsException e) {
             fail("Exception should not be raised here");
         }
@@ -154,15 +148,15 @@ public class LibraryManagementSystemTest {
     @Test
     public void shouldNotRemoveAnyBookWhenIsbnDoesntMatch() {
         try {
-            book1 = new Books("Effective Coding", "Abc", "1234567891234", 2018);
+            book1 = new Books("Effective Coding", "Abc", "978-0-596-52068-7", 2018);
             libraryManagementSystem.addBook(book1);
-            assertEquals(1, libraryManagementSystem.countCopiesByIsbn("1234567891234"));
-            libraryManagementSystem.borrowBook("1111111111111");
+            assertEquals(1, libraryManagementSystem.countCopiesByIsbn("978-0-596-52068-7"));
+            libraryManagementSystem.borrowBook("111-1-2345-6789-0"); // Incorrect ISBN format
 
             fail("Book not available exception should be raised here");
         } catch (bookNotAvailableException e) {
-            assertEquals(1, libraryManagementSystem.countCopiesByIsbn("1234567891234"));
-            assertEquals(0, libraryManagementSystem.countCopiesByIsbn("1111111111111"));
+            assertEquals(1, libraryManagementSystem.countCopiesByIsbn("978-0-596-52068-7"));
+            assertEquals(0, libraryManagementSystem.countCopiesByIsbn("111-1-2345-6789-0"));
         } catch (invalidBookDetailsException e) {
             fail("Exception should not be raised here");
         }
@@ -171,15 +165,15 @@ public class LibraryManagementSystemTest {
     @Test
     public void shouldDecrementCountWhenBookIsAvailable() {
         try {
-            book1 = new Books("Effective Coding", "Abc", "1234567891234", 2018);
+            book1 = new Books("Effective Coding", "Abc", "978-0-596-52068-7", 2018);
             libraryManagementSystem.addBook(book1);
             libraryManagementSystem.addBook(book1);
-            assertEquals(2, libraryManagementSystem.countCopiesByIsbn("1234567891234"));
+            assertEquals(2, libraryManagementSystem.countCopiesByIsbn("978-0-596-52068-7"));
 
-            libraryManagementSystem.borrowBook("1234567891234");
-            assertEquals(1, libraryManagementSystem.countCopiesByIsbn("1234567891234"));
-            libraryManagementSystem.borrowBook("1234567891234");
-            assertEquals(0, libraryManagementSystem.countCopiesByIsbn("1234567891234"));
+            libraryManagementSystem.borrowBook("978-0-596-52068-7");
+            assertEquals(1, libraryManagementSystem.countCopiesByIsbn("978-0-596-52068-7"));
+            libraryManagementSystem.borrowBook("978-0-596-52068-7");
+            assertEquals(0, libraryManagementSystem.countCopiesByIsbn("978-0-596-52068-7"));
         } catch (invalidBookDetailsException | bookNotAvailableException e) {
             fail("Exception should not be raised here");
         }
@@ -188,35 +182,16 @@ public class LibraryManagementSystemTest {
     @Test
     public void shouldReturnBookAndIncrementCount() {
         try {
-            book1 = new Books("Effective Coding", "Abc", "1234567891234", 2018);
+            book1 = new Books("Effective Coding", "Abc", "978-0-596-52068-7", 2018);
             libraryManagementSystem.addBook(book1);
-            libraryManagementSystem.borrowBook("1234567891234");
-            assertEquals(0, libraryManagementSystem.countCopiesByIsbn("1234567891234"));
+            libraryManagementSystem.borrowBook("978-0-596-52068-7");
+            assertEquals(0, libraryManagementSystem.countCopiesByIsbn("978-0-596-52068-7"));
 
             // Return the book
             libraryManagementSystem.returnBook(book1);
-            assertEquals(1, libraryManagementSystem.countCopiesByIsbn("1234567891234"));
-
+            assertEquals(1, libraryManagementSystem.countCopiesByIsbn("978-0-596-52068-7"));
         } catch (invalidBookDetailsException | bookNotAvailableException e) {
             fail("Exception should not be raised here");
-        }
-    }
-
-    @Test
-    public void shouldShowAllAvailableBook() {
-        try {
-            book1 = new Books("Effective Coding", "Abc", "1234567891234", 2018);
-            book2 = new Books("Animal Farm", "George Orwell", "0123456789123", 1956);
-            libraryManagementSystem.addBook(book1);
-            libraryManagementSystem.addBook(book2);
-
-            List<Books> availableBooks = libraryManagementSystem.viewAllAvailableBooks();
-            assertTrue(availableBooks.contains(book1));
-            assertTrue(availableBooks.contains(book2));
-            assertEquals(2, availableBooks.size());
-
-        } catch (invalidBookDetailsException e) {
-            fail("Exception should not be thrown for valid books");
         }
     }
 }

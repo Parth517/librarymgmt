@@ -2,11 +2,13 @@ package com.example;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LibraryManagementSystem implements BookManager {
-    private final List<Books> booksInLibrary = new ArrayList<>();
     private final BookInventory bookInventory;
+    private final Map<String, Books> booksInLibrary = new HashMap<>();
 
     public LibraryManagementSystem(BookInventory bookInventory) {
         this.bookInventory = bookInventory;
@@ -14,13 +16,16 @@ public class LibraryManagementSystem implements BookManager {
 
     @Override
     public void addBook(Books book) {
-        booksInLibrary.add(book);
+        String isbn = book.getIsbn();
+        if (!booksInLibrary.containsKey(isbn)) {
+            booksInLibrary.put(isbn, book);
+        }
         bookInventory.countBook(book);
     }
 
     @Override
     public List<Books> getBooksInLibrary() {
-        return Collections.unmodifiableList(booksInLibrary);
+        return Collections.unmodifiableList(new ArrayList<>(booksInLibrary.values()));
     }
 
     public int countCopiesByIsbn(String isbn) {
@@ -32,16 +37,17 @@ public class LibraryManagementSystem implements BookManager {
         if (availCopies <= 0) {
             throw new bookNotAvailableException("The requested book is not available");
         }
-        booksInLibrary.removeIf(book -> book.getIsbn().equals(isbn));
+        booksInLibrary.remove(isbn);
         bookInventory.decrementBookCount(isbn);
     }
 
-    public void returnBook(Books book){
-        booksInLibrary.add(book);
-        bookInventory.incrementBookCount(book.getIsbn());
+    public void returnBook(Books book) {
+        String isbn = book.getIsbn();
+        booksInLibrary.put(isbn, book);
+        bookInventory.incrementBookCount(isbn);
     }
 
     public List<Books> viewAllAvailableBooks() {
-        return Collections.unmodifiableList(booksInLibrary);
+        return Collections.unmodifiableList(new ArrayList<>(booksInLibrary.values()));
     }
 }

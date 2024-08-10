@@ -1,6 +1,11 @@
 package com.example;
 
+import java.util.regex.Pattern;
+
 public class Books {
+    private static final String ISBN_REGEX="^978-\\d-\\d{3}-\\d{5}\\-\\d$";
+    private static final Pattern ISBN_PATTERN=Pattern.compile(ISBN_REGEX);
+
 
     private final String title;
     private final String author;
@@ -21,6 +26,10 @@ public class Books {
             isbn == null || isbn.isEmpty() ||
             publicationYear <= 0) {
             throw new invalidBookDetailsException("All details must be filled");
+        }
+        if(!ISBN_PATTERN.matcher(isbn).matches()){
+            throw new invalidBookDetailsException("ISBN must be in the format 978-0-596-52068-7");
+
         }
     }
 

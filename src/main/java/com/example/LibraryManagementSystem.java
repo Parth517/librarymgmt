@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class LibraryManagementSystem implements BookManager {
-
     private final List<Books> booksInLibrary = new ArrayList<>();
     private final BookInventory bookInventory;
 
@@ -42,7 +41,7 @@ public class LibraryManagementSystem implements BookManager {
         bookInventory.incrementBookCount(book.getIsbn());
     }
 
-    public List<Books> viewAllAvailableBooks(){
+    public List<Books> viewAllAvailableBooks() {
         return Collections.unmodifiableList(booksInLibrary);
     }
 }

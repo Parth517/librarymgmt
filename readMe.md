@@ -21,4 +21,4 @@ Result of tests
 
 ##Version and library used
 <p>Java Version: java 16.0.2</p>
-<p>Test Version:JUNIt</p>
+<p>Test Version:JUNIT</p>

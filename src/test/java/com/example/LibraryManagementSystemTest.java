@@ -194,4 +194,26 @@ public class LibraryManagementSystemTest {
             fail("Exception should not be raised here");
         }
     }
+
+    @Test
+    public void shouldViewAllAvailableBooks() {
+        try {
+            // Add two books to the library
+            book1 = new Books("Effective Coding", "Abc", "978-0-596-52068-7", 2018);
+            book2 = new Books("Clean Code", "Xyz", "978-1-234-56789-7", 2019);
+
+            libraryManagementSystem.addBook(book1);
+            libraryManagementSystem.addBook(book2);
+
+            // Get the list of all available books
+            List<Books> availableBooks = libraryManagementSystem.viewAllAvailableBooks();
+
+            // Verify that the list contains both books
+            assertEquals(2, availableBooks.size());
+            assertTrue(availableBooks.contains(book1));
+            assertTrue(availableBooks.contains(book2));
+        } catch (invalidBookDetailsException e) {
+            fail("Exception should not be thrown for valid book details");
+        }
+    }
 }

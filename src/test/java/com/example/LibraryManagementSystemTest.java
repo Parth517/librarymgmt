@@ -38,6 +38,24 @@ public class LibraryManagementSystemTest {
             fail("Exception should not be thrown for valid book details");
         }
     }
+    @Test
+    public void shouldThrowExceptionForInvalidIsbnPattern() {
+        try {
+            // ISBN with invalid pattern
+            new Books("Effective Coding", "Abc", "123-4-567-891234-0", 2018);
+            fail("Expected an invalidBookDetailsException to be thrown due to invalid ISBN pattern");
+        } catch (invalidBookDetailsException e) {
+            assertEquals("ISBN must be in the format 978-0-596-52068-7", e.getMessage());
+        }
+
+        try {
+            // Another invalid ISBN pattern
+            new Books("Effective Coding", "Abc", "978-0-596-52068", 2018);
+            fail("Expected an invalidBookDetailsException to be thrown due to invalid ISBN pattern");
+        } catch (invalidBookDetailsException e) {
+            assertEquals("ISBN must be in the format 978-0-596-52068-7", e.getMessage());
+        }
+    }
 
     @Test
     public void shouldReturnExceptionWhenIncorrectNumberOfDetailsAreAdded() {
@@ -216,22 +234,10 @@ public class LibraryManagementSystemTest {
             fail("Exception should not be thrown for valid book details");
         }
     }
-    @Test
-    public void shouldThrowExceptionForInvalidIsbnPattern() {
-        try {
-            // ISBN with invalid pattern
-            new Books("Effective Coding", "Abc", "123-4-567-891234-0", 2018);
-            fail("Expected an invalidBookDetailsException to be thrown due to invalid ISBN pattern");
-        } catch (invalidBookDetailsException e) {
-            assertEquals("ISBN must be in the format 978-0-596-52068-7", e.getMessage());
-        }
 
-        try {
-            // Another invalid ISBN pattern
-            new Books("Effective Coding", "Abc", "978-0-596-52068", 2018);
-            fail("Expected an invalidBookDetailsException to be thrown due to invalid ISBN pattern");
-        } catch (invalidBookDetailsException e) {
-            assertEquals("ISBN must be in the format 978-0-596-52068-7", e.getMessage());
-        }
-    }
+    @Test
+    public void shouldViewAllAvailableBooksWhenNoneAreAdded() {
+     List<Books> availableBooks = libraryManagementSystem.viewAllAvailableBooks();
+     assertTrue(availableBooks.isEmpty());
+}
 }

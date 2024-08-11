@@ -38,6 +38,7 @@ public class LibraryManagementSystemTest {
             fail("Exception should not be thrown for valid book details");
         }
     }
+
     @Test
     public void shouldThrowExceptionForInvalidIsbnPattern() {
         try {
@@ -237,7 +238,29 @@ public class LibraryManagementSystemTest {
 
     @Test
     public void shouldViewAllAvailableBooksWhenNoneAreAdded() {
-     List<Books> availableBooks = libraryManagementSystem.viewAllAvailableBooks();
-     assertTrue(availableBooks.isEmpty());
-}
-}
+        List<Books> availableBooks = libraryManagementSystem.viewAllAvailableBooks();
+        assertTrue(availableBooks.isEmpty());
+    }
+    
+    @Test
+    public void shouldManageMultipleBooksWithDifferentIsbn() {
+        try {
+            book1 = new Books("Effective Coding", "Abc", "978-0-596-52068-7", 2018);
+            book2 = new Books("Clean Code", "Xyz", "978-1-234-56789-7", 2019);
+            libraryManagementSystem.addBook(book1);
+            libraryManagementSystem.addBook(book2);
+            
+            libraryManagementSystem.borrowBook("978-0-596-52068-7");
+            assertEquals(0, libraryManagementSystem.countCopiesByIsbn("978-0-596-52068-7"));
+            assertEquals(1, libraryManagementSystem.countCopiesByIsbn("978-1-234-56789-7"));
+            
+            libraryManagementSystem.returnBook(book1);
+            assertEquals(1, libraryManagementSystem.countCopiesByIsbn("978-0-596-52068-7"));
+            assertEquals(1, libraryManagementSystem.countCopiesByIsbn("978-1-234-56789-7"));
+        } catch (invalidBookDetailsException | bookNotAvailableException e) {
+            fail("Exception should not be raised here");
+        }
+    }
+  
+}   
+

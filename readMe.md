@@ -13,10 +13,15 @@ and increment and decrement function</p>
 <p>The book not available Exception is raised when a person tries to borrow a book that doesn't exist in the system</p>
 <p>The invalidbookdetails Exception is raised when invalid details for the book are added when the book is added, an exception will be raised when the book name is missing, author name is missing,isbn number is missing or publication year is missing</p>
 
+## Test Results
+![Test Result 1](testResults/testresults.png)
+![Test Result 1](testResults/testsummary.png)
+
 ## How to run?
 Clone this repo
 <p>Run the test by librarymgmt/tree/main/src/test/java/com/example/LibraryManagementSystemTest.java</p>
 Result of tests
+
 
 
 ## Version and library used

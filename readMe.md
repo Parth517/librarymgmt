@@ -14,8 +14,8 @@ and increment and decrement function</p>
 <p>The invalidbookdetails Exception is raised when invalid details for the book are added when the book is added, an exception will be raised when the book name is missing, author name is missing,isbn number is missing or publication year is missing</p>
 
 ## Test Results
-![Test Result 1](testResults/testresults.png)
-![Test Result 1](testResults/testsummary.png)
+![Test Result 1](testResults/testresults.PNG)
+![Test Result 2](testResults/testsummary.PNG)
 
 ## How to run?
 Clone this repo
